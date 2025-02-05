@@ -6,8 +6,12 @@ body {
     background: #f8f9fa;
   }
   h1 {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
+  }
+  h2{
+    font-size: 14px;
+    color: #661717
   }
   button {
     background: #ffcc00;

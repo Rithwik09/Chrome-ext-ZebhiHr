@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "x-custom-header", "operation": "set", "value": "MyCustomValue" }
+      ]
+    },
+    "condition": {
+      "urlFilter": "api.zebihr.com",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  }
+]

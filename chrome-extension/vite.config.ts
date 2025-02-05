@@ -12,7 +12,7 @@ export default defineConfig({
         background: "src/background.ts"
       },
       output: {
-        entryFileNames: "[name].js" // Ensures it outputs `background.js`
+        entryFileNames: "background.js" // Ensures it outputs `background.js`
       }
     }
   }

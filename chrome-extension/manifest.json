@@ -1,20 +1,36 @@
 {
-    "manifest_version": 3,
-    "name": "Happy Message Extension",
-    "version": "1.0",
-    "description": "Click to see a happy message!",
-    "action": {
-      "default_popup": "src/popup.html",
-      "default_icon": {
-        "16": "public/vite.svg",
-        "48": "public/vite.svg",
-        "128": "public/vite.svg"
+  "manifest_version": 3,
+  "name": "Happy Message Extension",
+  "version": "1.0",
+  "description": "Click to see a happy message!",
+  "permissions": [
+    "storage",
+    "webRequest",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://app.zebihr.com/*",
+    "https://api.zebihr.com/*"
+  ],
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "public/vite.svg",
+      "48": "public/vite.svg",
+      "128": "public/vite.svg"
+    }
+  },
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "modify_headers",
+        "enabled": true,
+        "path": "rules.json"
       }
-    },
-    "background": {
-      "service_worker": "dist/background.js", 
-      "type": "module"
-    },
-    "permissions": ["storage"]
+    ]
   }
-  
+}
