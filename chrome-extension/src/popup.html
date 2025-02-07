@@ -3,22 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <title>Happy Extension</title> -->
   <link rel="stylesheet" href="./popup.css">
 </head>
 <body>
-  <div class="container">
-  <h1>Zebhri Hour Counter😊!!!</h1>
-  <h2>Your In-Time: </h2>
-  <h2>Your Break-Time: </h2>
-  <h2>Calculated Out-Time: </h2>
-    <!-- <h1>In-time</h1>   -->
-    <!-- <button id="happyButton">Click Me</button> -->
-    <!-- <button id="fetchUrl">Fetch Url</button>  -->
-
-    <button id="fetchData">Fetch Data</button>
+  <h1 class="title">Zebhri Hour Counter</h1>
+  <h2>Clock In-Time: </h2>
+  <h2>Break-Time: </h2>
+  <h2>Clock-out Time: </h2>
+    <button id="fetchData">Refresh</button>
+    <img id="statusIcon" src="" alt="Status Icon" width="40" height="40" style="margin-left: 10px;">
     <p id="message"></p>  
-  </div>
   <script type="module" src="./popup.ts"></script>
 </body>
 </html>

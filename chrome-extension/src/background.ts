@@ -1,6 +1,5 @@
 import browser from "webextension-polyfill";
 import { getTodayTimestamp } from "./utils/date";
-// import chrome from "chrome"; // Not needed, chrome is available globally in the extension environment
 
 browser.runtime.onInstalled.addListener(() => {
   console.log("Happy Message Extension installed!");
@@ -13,7 +12,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
     const todayTimestamp = getTodayTimestamp();
     const url = new URL(details.url);
 
-    // Check if the URL contains "break-time" AND today's date in startDate or endDate
+    
     if (
       url.pathname.includes("break-time") &&
       (url.searchParams.get("startDate") === todayTimestamp ||
@@ -38,33 +37,65 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 );
 
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("clcikedon came here!!");
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-  if (message.action === "fetchAPIData") {
-    chrome.storage.local.get(["apiUrl", "apiHeaders"], (data) => {
-      if (!data.apiUrl || !data.apiHeaders) {
-        console.error("No API details found.");
-        sendResponse({ error: "No API details found." });
-        return;
-      }
+//   if (message.action === "fetchAPIData") {
+//     chrome.storage.local.get(["apiUrl", "apiHeaders"], (data) => {
+//       if (!data.apiUrl || !data.apiHeaders) {
+//         console.error("No API details found.");
+//         sendResponse({ error: "No API details found." });
+//         return;
+//       }
 
-      // Fetch the API
-      fetch(data.apiUrl, {
-        method: "GET",
-        headers: data.apiHeaders
+//       // Fetch the API
+//       fetch(data.apiUrl, {
+//         method: "GET",
+//         headers: data.apiHeaders
+//       })
+//         .then((response) => response.json())
+//         .then((result) => {
+//           console.log("Fetched API Response:", result);
+//           sendResponse({ success: true, data: result });
+//         })
+//         .catch((error) => {
+//           console.error("Error fetching API:", error);
+//           sendResponse({ error: "Failed to fetch API" });
+//         });
+//     });
+
+//     return true; 
+//   }
+// });
+
+
+function fetchDataAndUpdatePopup() {
+  chrome.storage.local.get(["apiUrl", "apiHeaders"], (data) => {
+    if (!data.apiUrl || !data.apiHeaders) {
+      console.error("No API details found.");
+      return;
+    }
+
+    fetch(data.apiUrl, {
+      method: "GET",
+      headers: data.apiHeaders,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Fetched API Response:", result);
+        // Send updated data to popup.ts
+        chrome.runtime.sendMessage({ action: "updatePopup", data: result });
       })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("Fetched API Response:", result);
-          sendResponse({ success: true, data: result });
-        })
-        .catch((error) => {
-          console.error("Error fetching API:", error);
-          sendResponse({ error: "Failed to fetch API" });
-        });
-    });
+      .catch((error) => {
+        console.error("Error fetching API:", error);
+      });
+  });
+}
 
-    return true; // ✅ Important! Keeps the messaging channel open for async sendResponse
+setInterval(fetchDataAndUpdatePopup, 3600000);
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "fetchAPIData") {
+    fetchDataAndUpdatePopup();
+    sendResponse({ success: true });
   }
 });
