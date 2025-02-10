@@ -1,24 +1,26 @@
 {
   "manifest_version": 3,
-  "name": "Happy Message Extension",
+  "name": "Zebihr hour Counter",
   "version": "1.0",
-  "description": "Click to see a happy message!",
+  "description": "Calculates Accurate Out-Time!",
   "permissions": [
     "storage",
     "webRequest",
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": [
-    "https://app.zebihr.com/*",
-    "https://api.zebihr.com/*"
-  ],
+  "host_permissions": ["https://app.zebihr.com/*", "https://api.zebihr.com/*"],
   "action": {
     "default_popup": "src/popup.html",
     "default_icon": {
-      "16": "public/icons8-clock.gif",
-      "48": "public/icons8-clock.gif",
-      "128": "public/icons8-clock.gif"
+      "16": "public/icons8-office-100.png",
+      "48": "public/icons8-office-100.png",
+      "128": "public/icons8-office-100.png"
+    },
+    "icons": {
+      "16": "public/icons8-clock-100.png",
+      "48": "public/icons8-clock-100.png",
+      "128": "public/icons8-clock-100.png"
     }
   },
   "background": {
