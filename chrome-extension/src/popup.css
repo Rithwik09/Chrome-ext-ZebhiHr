@@ -1,36 +1,12 @@
-/* body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    width: 200px;
-    padding: 20px;
-    background: #f8f9fa;
-  }
-  h1 {
-    font-size: 15px;
-    color: #333;
-  }
-  h2{
-    font-size: 14px;
-    color: #661717
-  }
-  button {
-    background: #ffcc00;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  button:hover {
-    background: #ffaa00;
-  }
-   */
-
-
 /* Reset Default Styles */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border-radius: 25px;
   font-family: "Poppins", Arial, sans-serif;
 }
 
@@ -39,9 +15,9 @@ body {
   text-align: center;
   width: 250px;
   padding: 20px;
-  background: linear-gradient(135deg, #f5f5f5, #d3ebf0);
+  background: linear-gradient(135deg, #ff753e, #ffffff);
   color: #ffffff;
-  border-radius: 10px;
+  border-radius: 30px;
   animation: fadeIn 0.5s ease-in-out;
 }
 

@@ -1,3 +1,5 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 function getTimeDifferenceInSeconds(start: string, end: string): number {
   const [startH, startM, startS] = start.split(":").map(Number);
   const [endH, endM, endS] = end.split(":").map(Number);
@@ -92,66 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
-
-// document.getElementById("fetchData")?.addEventListener("click", () => {
-//   console.log("Clicked on fetchData");
-
-//   chrome.runtime.sendMessage({ action: "fetchAPIData" }, (response) => {
-//     if (chrome.runtime.lastError) {
-//       console.error("Error sending message:", chrome.runtime.lastError);
-//       return;
-//     }
-
-//     if (response?.error) {
-//       console.error("Error fetching data:", response.error);
-//       alert("Error fetching data. Check console.");
-//     } else {
-//       console.log("Captured Data:", response);
-
-//       if (response.data[0]) {
-//         const breakTime = response.data[0].breakHrs;
-//         const inTime = response.data[0].inTime;
-//         const punches = response.data[0].punches;
-//         const calculatedOutTime = calculateOutTime(punches, 8.5);
-
-//         const inTimeElement = document.querySelector("h2:nth-of-type(1)");
-//         if (inTimeElement) {
-//           inTimeElement.innerHTML = `Clock In-Time: <strong>${inTime}</strong>`;
-//           localStorage.setItem("inTime", inTime);
-//         }
-
-//         const breakTimeElement = document.querySelector("h2:nth-of-type(2)");
-//         if (breakTimeElement) {
-//           breakTimeElement.innerHTML = `Break-Time: <strong>${breakTime}</strong>`;
-//           localStorage.setItem("breakTime", breakTime);
-//         }
-
-//         const outTimeElement = document.querySelector("h2:nth-of-type(3)");
-//         if (outTimeElement) {
-//           outTimeElement.innerHTML = `Clock Out-Time: <strong>${calculatedOutTime}</strong>`;
-//           localStorage.setItem("calculatedOutTime", calculatedOutTime);
-//         }
-
-//         const punchList = punches.split(",");
-//         const lastPunch = punchList[punchList.length - 1];
-//         const lastPunchType = lastPunch.split(":").pop(); // "in" or "out"
-
-//         const statusIcon = document.getElementById("statusIcon") as HTMLImageElement;
-//         if (statusIcon) {
-//           const checkedInIcon = chrome.runtime.getURL("Boxing-gloves.png");
-//           const checkedOutIcon = chrome.runtime.getURL("bag.png");
-
-//           statusIcon.src = lastPunchType === "in" ? checkedInIcon : checkedOutIcon;
-//           statusIcon.alt = lastPunchType === "in" ? "Checked In" : "Checked Out";
-
-//             statusIcon.classList.remove("show"); // Remove class to restart animation
-//            void statusIcon.offsetWidth; // Trigger reflow to restart animation
-//            statusIcon.classList.add("show");
-//         }
-//       }
-//     }
-//   });
-// });
 
 function updatePopupUI(data: any) {
   console.log("Updating popup with new data:", data);
