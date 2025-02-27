@@ -13,9 +13,10 @@
 /* Body */
 body {
   text-align: center;
-  width: 250px;
-  padding: 20px;
-  background: linear-gradient(135deg, #ff753e, #ffffff);
+  width: 350px;
+  height: 200px;
+  /* padding: 20px; */
+  background: linear-gradient(135deg, #3effdfc0, #9bbae7);
   color: #ffffff;
   border-radius: 30px;
   animation: fadeIn 0.5s ease-in-out;
@@ -29,8 +30,41 @@ body {
   gap: 10px;
 }
 
+.header {
+  display: flex; 
+  align-items: center;  /* Vertically align items */
+  justify-content: space-between;
+}
+
+.menu-button {
+  background: transparent;
+  color: rgb(0, 0, 0);
+  /* margin-left: 250px; */
+  margin-right: 15px;
+  border: none;
+  /* padding: 5px 10px; */
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 12px;
+  /* border-radius: 8px; */
+  /* margin-top: 10px; */
+  /* transition: all 0.3s ease-in-out; */
+  /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 /* Title */
 h1 {
+  padding-top: 10px;
+  height: 40px;
+  margin-left: 111px;
   font-size: 18px;
   font-weight: bold;
   color: #353434;
@@ -56,29 +90,29 @@ h2:hover {
 
 /* Button */
 button {
-  background: #007bff;
-  color: white;
+  background: transparent;
+  color: rgb(0, 0, 0);
   border: none;
-  padding: 10px 15px;
-  font-size: 14px;
+  /* padding: 10px 15px; */
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   border-radius: 8px;
   margin-top: 10px;
   transition: all 0.3s ease-in-out;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
 }
 
 /* Button Hover Effect */
-button:hover {
+/* button:hover {
   background: #0056b3;
   transform: scale(1.08);
-}
+} */
 
 /* Button Click Animation */
 button:active {
   transform: scale(0.95);
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); */
 }
 
 /* Message Paragraph */

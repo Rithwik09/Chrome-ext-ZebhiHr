@@ -4,16 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./popup.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-  <button id="editGradient" style="background: none; border: none; cursor: pointer;">
-    <i class="fas fa-pen"></i>
-  </button> 
-  <h1 class="title">Zebhri Hour Counter</h1>
-  <h2>Clock In-Time: </h2>
-  <h2>Break-Time: </h2>
-  <h2>Clock-out Time: </h2>
-    <button id="fetchData">Refresh</button>
+  <div class="header">
+    <h1 class="title">Zebhri Hour Counter</h1>
+    <button class="menu-button">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="content"> 
+    <h2>Clock In-Time: </h2>
+    <h2>Break-Time: </h2>
+    <h2>Clock-out Time: </h2>
+  </div>
+    <button id="fetchData"><i class="fa-solid fa-life-ring"></i>
+    </button>
     <img id="statusIcon" src="" alt="Status Icon" width="40" height="40" style="margin-left: 10px;">
   <script type="module" src="./popup.ts"></script>
 </body>
