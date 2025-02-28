@@ -13,7 +13,7 @@
 /* Body */
 body {
   text-align: center;
-  width: 350px;
+  width: 311px;
   height: 200px;
   /* padding: 20px; */
   background: linear-gradient(135deg, #3effdfc0, #9bbae7);
@@ -64,7 +64,7 @@ body {
 h1 {
   padding-top: 10px;
   height: 40px;
-  margin-left: 111px;
+  margin-left: 60px;
   font-size: 18px;
   font-weight: bold;
   color: #353434;
