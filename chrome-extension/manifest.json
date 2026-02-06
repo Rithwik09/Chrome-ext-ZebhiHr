@@ -1,31 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "Zebihr hour Counter",
+  "name": "Zebihr Hour Counter",
   "version": "1.0",
   "description": "Calculates Accurate Out-Time!",
   "permissions": [
-    "storage",
-    "webRequest",
-    "declarativeNetRequest",
-    "declarativeNetRequestWithHostAccess"
-  ],
-  "host_permissions": ["https://app.zebihr.com/*", "https://api.zebihr.com/*"],
+  "storage",
+  "webRequest",
+  "alarms",
+  "declarativeNetRequest",
+  "declarativeNetRequestWithHostAccess"
+],
+  "host_permissions": [
+  "*://*.helixbeat.com/*"
+],
   "action": {
     "default_popup": "src/popup.html",
     "default_icon": {
       "16": "public/icons8-office-100.png",
       "48": "public/icons8-office-100.png",
       "128": "public/icons8-office-100.png"
-    },
-    "icons": {
-      "16": "public/icons8-clock-100.png",
-      "48": "public/icons8-clock-100.png",
-      "128": "public/icons8-clock-100.png"
     }
   },
   "background": {
-    "service_worker": "dist/background.js"
-  },
+  "service_worker": "src/background.ts",
+  "type": "module"
+},
   "declarative_net_request": {
     "rule_resources": [
       {
@@ -34,5 +33,11 @@
         "path": "rules.json"
       }
     ]
+  },
+"web_accessible_resources": [
+  {
+    "resources": ["*"],
+    "matches": ["<all_urls>"]
   }
+]
 }

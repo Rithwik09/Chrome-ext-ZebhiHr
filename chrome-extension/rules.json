@@ -9,7 +9,7 @@
       ]
     },
     "condition": {
-      "urlFilter": "api.zebihr.com",
+      "urlFilter": "synergy.helixbeat.com",
       "resourceTypes": ["xmlhttprequest"]
     }
   }

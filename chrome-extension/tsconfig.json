@@ -26,14 +26,12 @@
 
 {
   "compilerOptions": {
-    "target": "ESNext",
     "module": "ESNext",
+    "target": "ESNext",
     "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist" 
+    "outDir": "dist",
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
+

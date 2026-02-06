@@ -1,177 +1,262 @@
-/* Reset Default Styles */
-@import '@fortawesome/fontawesome-free/css/all.min.css';
+  /* Reset Default Styles */
+  @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  border-radius: 25px;
-  font-family: "Poppins", Arial, sans-serif;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 25px;
+    font-family: "Poppins", Arial, sans-serif;
+  }
+
+  /* Body */
+  body {
+    text-align: center;
+    width: 311px;
+    height: 200px;
+    /* padding: 20px; */
+    background: linear-gradient(135deg, #ffffffc0, #8cc3f7);;
+    color: #ffffff;
+    border-radius: 30px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  /* Container */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header {
+    display: flex; 
+    align-items: center;  /* Vertically align items */
+    justify-content: space-between;
+  }
+
+  .menu-button {
+    background: transparent;
+    color: rgb(0, 0, 0);
+    /* margin-left: 250px; */
+    margin-right: 15px;
+    border: none;
+    /* padding: 5px 10px; */
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 12px;
+    /* border-radius: 8px; */
+    /* margin-top: 10px; */
+    /* transition: all 0.3s ease-in-out; */
+    /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: -4px;
+    width: 100%;
+  }
+
+
+  /* Title */
+  h1 {
+    padding-top: 10px;
+    height: 40px;
+    margin-left: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #353434;
+    animation: slideDown 0.6s ease-out;
+  }
+
+  /* Time Info */
+  h2 {
+    font-size: 14px;
+    color: #474747;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-weight: 500;
+    transition: transform 0.3s ease-in-out, background 0.3s;
+  }
+
+  /* Time Info Hover Effect */
+  h2:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Button */
+  button {
+    background: transparent;
+    color: rgb(0, 0, 0);
+    border: none;
+    /* padding: 10px 15px; */
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+    /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
+  }
+
+  /* Button Hover Effect */
+  /* button:hover {
+    background: #0056b3;
+    transform: scale(1.08);
+  } */
+
+  /* Button Click Animation */
+  button:active {
+    transform: scale(0.95);
+    /* box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); */
+  }
+
+  /* Message Paragraph */
+  #message {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 6px;
+    border-radius: 6px;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+
+  #statusIcon {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+  }
+
+  #statusIcon.show {
+    opacity: 1;
+    transform: scale(1.1);
+    animation: bounce 0.5s ease-in-out;
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rotate360 {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Class to apply the animation */
+  .rotating {
+    animation: rotate360 4s ease-in-out;
+    display: inline-block; /* Ensures the animation only applies to the icon */
+  }
+  
+  /* You may need to adjust your button styles to accommodate the rotating icon */
+  #fetchData {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #fetchData i {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .flip-card {
+  perspective: 1000px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-/* Body */
-body {
+.flip-inner {
+  position: relative;
+  width: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
   text-align: center;
-  width: 311px;
-  height: 200px;
-  /* padding: 20px; */
-  background: linear-gradient(135deg, #3effdfc0, #9bbae7);
-  color: #ffffff;
-  border-radius: 30px;
-  animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Container */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.header {
-  display: flex; 
-  align-items: center;  /* Vertically align items */
-  justify-content: space-between;
-}
-
-.menu-button {
-  background: transparent;
-  color: rgb(0, 0, 0);
-  /* margin-left: 250px; */
-  margin-right: 15px;
+.mode-btn {
+  margin: 5px;
+  padding: 5px 10px;
   border: none;
-  /* padding: 5px 10px; */
-  font-size: 15px;
-  font-weight: bold;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
   cursor: pointer;
-  margin-bottom: 12px;
-  /* border-radius: 8px; */
-  /* margin-top: 10px; */
-  /* transition: all 0.3s ease-in-out; */
-  /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+.mode-btn:hover {
+  background-color: #0056b3;
 }
 
-/* Title */
-h1 {
-  padding-top: 10px;
-  height: 40px;
-  margin-left: 60px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #353434;
-  animation: slideDown 0.6s ease-out;
-}
 
-/* Time Info */
-h2 {
-  font-size: 14px;
-  color: #474747;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  font-weight: 500;
-  transition: transform 0.3s ease-in-out, background 0.3s;
-}
-
-/* Time Info Hover Effect */
-h2:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* Button */
-button {
-  background: transparent;
-  color: rgb(0, 0, 0);
-  border: none;
-  /* padding: 10px 15px; */
-  font-size: 20px;
-  font-weight: bold;
+#outTimeCard {
   cursor: pointer;
-  border-radius: 8px;
-  margin-top: 10px;
-  transition: all 0.3s ease-in-out;
-  /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); */
-}
-
-/* Button Hover Effect */
-/* button:hover {
-  background: #0056b3;
-  transform: scale(1.08);
-} */
-
-/* Button Click Animation */
-button:active {
-  transform: scale(0.95);
-  /* box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2); */
-}
-
-/* Message Paragraph */
-#message {
-  font-size: 14px;
-  margin-top: 10px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 6px;
-  border-radius: 6px;
-  transition: opacity 0.4s ease-in-out;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-
-#statusIcon {
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
-}
-
-#statusIcon.show {
-  opacity: 1;
-  transform: scale(1.1);
-  animation: bounce 0.5s ease-in-out;
-}
-
-@keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
 }

@@ -1,155 +1,166 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+// ------------------------ Time Utilities ------------------------
+
 function getTimeDifferenceInSeconds(start: string, end: string): number {
   const [startH, startM, startS] = start.split(":").map(Number);
   const [endH, endM, endS] = end.split(":").map(Number);
-
   return (endH * 3600 + endM * 60 + endS) - (startH * 3600 + startM * 60 + startS);
 }
 
-function addSecondsToTime(time: string, secondsToAdd: number): string {
-  let [hours, minutes, seconds] = time.split(":").map(Number);
-  let totalSeconds = hours * 3600 + minutes * 60 + seconds + secondsToAdd;
+function to12HourFormat(time24: string): string {
+  let [h, m, s] = time24.split(":").map(Number);
 
-  let newHours = Math.floor(totalSeconds / 3600) % 24;
-  let newMinutes = Math.floor((totalSeconds % 3600) / 60);
-  let newSeconds = totalSeconds % 60;
+  const period = h >= 12 ? "PM" : "AM";
+  let h12 = h % 12;
+  if (h12 === 0) h12 = 12;
 
-  return convertTo12HourFormat(
-    `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}:${String(newSeconds).padStart(2, "0")}`
-  );
+  return `${String(h12).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")} ${period}`;
 }
 
-function convertTo12HourFormat(time24: string): string {
-  let [hours, minutes, seconds] = time24.split(":").map(Number);
-  let period = hours >= 12 ? "PM" : "AM";
-
-  let hours12 = hours % 12;
-  if (hours12 === 0) hours12 = 12; // 0 should be converted to 12 AM
-
-  return `${String(hours12).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")} ${period}`;
+function to24HourSeconds(time24: string): number {
+  const [h, m, s] = time24.split(":").map(Number);
+  return h * 3600 + m * 60 + s;
 }
 
-const punches: string = "10:42:38:in,12:17:49:out,12:20:32:in,12:40:54:out,13:02:19:in"; 
-const requiredWorkHours: number = 8.5;
+function secondsToHMS(sec: number): string {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = Math.floor(sec % 60);
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
 
-function calculateOutTime(punches: string, requiredWorkHours: number): string {
-  console.log("Calculating out time...");
-  
-  const punchList = punches.split(",").map(p => {
+// ------------------------ Work Settings ------------------------
+
+const requiredWorkHours = 8.5; // clean & simple
+let timeLeftSeconds = 0;
+
+// ------------------------ Punch Parsing & Work Calculation ------------------------
+
+function parsePunches(punches: string) {
+  return punches.split(",").map(p => {
     const parts = p.split(":");
-    const time = parts.slice(0, 3).join(":"); // Extract the first three parts as time
-    const type = parts[3]; // The last part is the type (in/out)
-    return { time, type };
+    return {
+      time: parts.slice(0, 3).join(":"), // HH:mm:ss
+      type: parts[3] // in/out
+    };
   });
+}
 
-  let totalWorkSeconds = 0;
-  let lastInTime: string | null = null;
+function calculateTotalWorkSeconds(punches: string): number {
+  const punchList = parsePunches(punches);
 
-  for (let i = 0; i < punchList.length; i++) {
-    if (punchList[i].type === "in") {
-      lastInTime = punchList[i].time;
-    } else if (punchList[i].type === "out" && lastInTime) {
-      totalWorkSeconds += getTimeDifferenceInSeconds(lastInTime, punchList[i].time);
-      lastInTime = null;
+  let total = 0;
+  let lastIn: string | null = null;
+
+  for (const p of punchList) {
+    if (p.type === "in") {
+      lastIn = p.time;
+    } else if (p.type === "out" && lastIn) {
+      total += getTimeDifferenceInSeconds(lastIn, p.time);
+      lastIn = null;
     }
   }
+  return total;
+}
 
+// ------------------------ Main Calculations ------------------------
+
+function calculateOutTime24(punches: string): string {
+  const punchList = parsePunches(punches);
+  const lastPunchIn = punchList[punchList.length - 1].time;
+
+  const totalWorkedSeconds = calculateTotalWorkSeconds(punches);
   const requiredSeconds = requiredWorkHours * 3600;
-  const remainingSeconds = requiredSeconds - totalWorkSeconds;
+
+  const remainingSeconds = requiredSeconds - totalWorkedSeconds;
 
   if (remainingSeconds <= 0) {
-    return "Work hours already completed!";
+    return "00:00:00"; // technically done
   }
 
-  // Calculate expected out time
-  const lastPunchIn = punchList[punchList.length - 1].time;
-  return addSecondsToTime(lastPunchIn, remainingSeconds);
+  const lastInSec = to24HourSeconds(lastPunchIn);
+  const outTimeSec = lastInSec + remainingSeconds;
+
+  const h = Math.floor((outTimeSec / 3600) % 24);
+  const m = Math.floor((outTimeSec % 3600) / 60);
+  const s = Math.floor(outTimeSec % 60);
+
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
+
+function calculateTimeLeftFromNow(outTime24: string): number {
+  const now = new Date();
+  const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  const outSec = to24HourSeconds(outTime24);
+
+  return Math.max(outSec - nowSec, 0);
+}
+
+// ------------------------ DOM Load Fill ------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Load stored values when the popup is opened
-  const storedBreakTime = localStorage.getItem("breakTime");
-  const storedOutTime = localStorage.getItem("calculatedOutTime");
-  const storedInTime = localStorage.getItem("inTime");
+  const outTime = localStorage.getItem("outTime24");
+  const breakTime = localStorage.getItem("breakTime");
+  const inTime = localStorage.getItem("inTime");
 
-  if (storedOutTime) {
-    const outTimeElement = document.querySelector("h2:nth-of-type(3)");
-    if (outTimeElement) {
-      outTimeElement.innerHTML = `Clock Out-Time: <strong>${storedOutTime}</strong>`;
-    }
+  if (outTime) {
+    document.getElementById("outTimeValue")!.textContent = to12HourFormat(outTime);
   }
 
-  if (storedBreakTime) {
-    const breakTimeElement = document.querySelector("h2:nth-of-type(2)");
-    if (breakTimeElement) {
-      breakTimeElement.innerHTML = `Break-Time: <strong>${storedBreakTime}</strong>`;
-    }
-  }
+  if (breakTime)
+    document.querySelector("h2:nth-of-type(2)")!.innerHTML = `Break-Time: <strong>${breakTime}</strong>`;
 
-  if (storedInTime) {
-    const inTimeElement = document.querySelector("h2:nth-of-type(1)");
-    if (inTimeElement) {
-      inTimeElement.innerHTML = `Clock In-Time: <strong>${storedInTime}</strong>`;
-    }
-  }
+  if (inTime)
+    document.querySelector("h2:nth-of-type(1)")!.innerHTML = `Clock In-Time: <strong>${inTime}</strong>`;
 });
+
+// ------------------------ Update UI From Background ------------------------
 
 function updatePopupUI(data: any) {
-  console.log("Updating popup with new data:", data);
+  if (!data[0]) return;
 
-  if (data[0]) {
-    const breakTime = data[0].breakHrs;
-    const inTime = data[0].inTime;
-    const punches = data[0].punches;
-    const calculatedOutTime = calculateOutTime(punches, 8.5); 
-    const punchList = punches.split(",");
-    const lastPunch = punchList[punchList.length - 1];
-    const lastPunchType = lastPunch.split(":").pop(); 
+  const breakTime = data[0].breakHrs;
+  const inTime = data[0].inTime;
+  const punches = data[0].punches;
 
-    document.querySelector("h2:nth-of-type(1)")!.innerHTML = `Clock In-Time: <strong>${inTime}</strong>`;
-    document.querySelector("h2:nth-of-type(2)")!.innerHTML = `Break-Time: <strong>${breakTime}</strong>`;
-    document.querySelector("h2:nth-of-type(3)")!.innerHTML = `Clock Out-Time: <strong>${calculatedOutTime}</strong>`;
+  const outTime24 = calculateOutTime24(punches);
+  timeLeftSeconds = calculateTimeLeftFromNow(outTime24);
 
-    localStorage.setItem("inTime", inTime);
-    localStorage.setItem("breakTime", breakTime);
-    localStorage.setItem("calculatedOutTime", calculatedOutTime);
+  document.querySelector("h2:nth-of-type(1)")!.innerHTML = `Clock In-Time: <strong>${inTime}</strong>`;
+  document.querySelector("h2:nth-of-type(2)")!.innerHTML = `Break-Time: <strong>${breakTime}</strong>`;
+  document.getElementById("outTimeValue")!.textContent = to12HourFormat(outTime24);
 
-    const statusIcon = document.getElementById("statusIcon") as HTMLImageElement;
-            if (statusIcon) {
-              const checkedInIcon = chrome.runtime.getURL("Boxing-gloves.png");
-              const checkedOutIcon = chrome.runtime.getURL("bag.png");
-    
-              statusIcon.src = lastPunchType === "in" ? checkedInIcon : checkedOutIcon;
-              statusIcon.alt = lastPunchType === "in" ? "Checked In" : "Checked Out";
-    
-                statusIcon.classList.remove("show"); // Remove class to restart animation
-               void statusIcon.offsetWidth; // Trigger reflow to restart animation
-               statusIcon.classList.add("show");
-            }
-  }
+  // store
+  localStorage.setItem("inTime", inTime);
+  localStorage.setItem("breakTime", breakTime);
+  localStorage.setItem("outTime24", outTime24);
+  localStorage.setItem("timeLeftSeconds", String(timeLeftSeconds));
+  localStorage.setItem("lastPunches", punches);
 }
 
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === "updatePopup") {
-    updatePopupUI(message.data);
-  }
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.action === "updatePopup") updatePopupUI(msg.data);
 });
+
+// ------------------------ Manual Fetch ------------------------
 
 document.getElementById("fetchData")?.addEventListener("click", () => {
-  console.log("Manual fetch triggered");
-
-  chrome.runtime.sendMessage({ action: "fetchAPIData" }, (response) => {
-    if (chrome.runtime.lastError) {
-      console.error("Error sending message:", chrome.runtime.lastError);
-      return;
-    }
-
-    if (response?.success) {
-      console.log("Manual fetch request sent successfully.");
-    } else {
-      console.error("Failed to fetch data manually.");
-    }
-  });
+  chrome.runtime.sendMessage({ action: "fetchAPIData" });
 });
 
+// ------------------------ Flip Card (Display Only) ------------------------
+
+const outTimeCard = document.getElementById("outTimeCard");
+
+outTimeCard?.addEventListener("click", () => {
+  outTimeCard.classList.toggle("flipped");
+
+  if (outTimeCard.classList.contains("flipped")) {
+    const stored = localStorage.getItem("timeLeftSeconds");
+    const remaining = stored ? parseInt(stored) : timeLeftSeconds;
+
+    const lbl = document.getElementById("timeLeftLabel");
+    if (lbl) lbl.textContent = `Time Left: ${secondsToHMS(remaining)}`;
+  }
+});
